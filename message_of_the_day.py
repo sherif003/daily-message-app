@@ -71,7 +71,7 @@ st.markdown(
 
 # Display the app title
 st.markdown('<h1 class="title">💌 Message of the Day 💌</h1>', unsafe_allow_html=True)
-st.markdown('<h2 class="subtitle">for Ayoy</h2>', unsafe_allow_html=True)
+st.markdown('<h2 class="subtitle">for Ayoy 💖</h2>', unsafe_allow_html=True)
 
 # Form for writing a new message
 with st.form("message_form"):
@@ -100,7 +100,7 @@ st.markdown('<div class="message-box">', unsafe_allow_html=True)
 st.write(f"✨ **{today}** ✨")
 if today_messages:
     for msg in today_messages:
-        st.write(f"💖 From {msg['author']}: {msg['message']} 💖")
+        st.write(f"💖 From {msg['author']}: {msg['message']} ")
 else:
     st.write("No messages for today yet. 💌")
 st.markdown('</div>', unsafe_allow_html=True)
@@ -110,6 +110,6 @@ if messages:
     st.markdown("<h2 style='text-align: center;'>Past Messages</h2>", unsafe_allow_html=True)
     for msg in sorted(messages, key=lambda x: x["date"], reverse=True):
         st.markdown('<div class="message-box">', unsafe_allow_html=True)
-        st.write(f"**{msg['date']}**")
+        st.write(f"✨ **{msg['date']}** ✨")
         st.write(f"💌 From {msg['author']}: {msg['message']}")
         st.markdown('</div>', unsafe_allow_html=True)
