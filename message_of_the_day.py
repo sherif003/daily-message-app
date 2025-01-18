@@ -75,7 +75,7 @@ st.markdown('<h2 class="subtitle">for Ayoy 💖</h2>', unsafe_allow_html=True)
 
 # Form for writing a new message
 with st.form("message_form"):
-    author = st.text_input("Your name (e.g., You or Her):", "")
+    author = st.text_input("Your name (Sherif or Aya):", "")
     new_message = st.text_area("Write your message below:", height=150)
     submitted = st.form_submit_button("Save Message 💾", help="Save today's message")
     
