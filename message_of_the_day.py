@@ -58,7 +58,7 @@ st.markdown(
 )
 
 # Display the app title
-st.markdown('<h1 class="title">💌 Message of the Day 💌</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="title">💌 Message of the Day 💌 for Ayoy</h1>', unsafe_allow_html=True)
 
 # Form for writing a new message
 with st.form("message_form"):
