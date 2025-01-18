@@ -13,10 +13,15 @@ st.set_page_config(
 # File to store messages
 MESSAGES_FILE = "messages.json"
 
-# Load existing messages
+# Load existing messages or initialize as an empty list
 if os.path.exists(MESSAGES_FILE):
-    with open(MESSAGES_FILE, "r") as file:
-        messages = json.load(file)
+    try:
+        with open(MESSAGES_FILE, "r") as file:
+            messages = json.load(file)
+        if not isinstance(messages, list):
+            messages = []  # Reset to empty list if the file contents are not a list
+    except json.JSONDecodeError:
+        messages = []  # Reset to empty list if the file is not valid JSON
 else:
     messages = []
 
@@ -34,6 +39,13 @@ st.markdown(
         text-align: center;
         font-size: 2.5rem;
         margin-bottom: 1rem;
+    }
+    .subtitle {
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        color: #FF1493;
+        text-align: center;
+        font-size: 1.5rem;
+        margin-top: -10px;
     }
     .message-box {
         font-family: "Arial", sans-serif;
@@ -59,11 +71,11 @@ st.markdown(
 
 # Display the app title
 st.markdown('<h1 class="title">💌 Message of the Day 💌</h1>', unsafe_allow_html=True)
-st.markdown('<h2 class="title">for Ayoy</h2>', unsafe_allow_html=True)
+st.markdown('<h2 class="subtitle">for Ayoy</h2>', unsafe_allow_html=True)
 
 # Form for writing a new message
 with st.form("message_form"):
-    author = st.text_input("Your name (Sherif or Aya):", "")
+    author = st.text_input("Your name (e.g., You or Her):", "")
     new_message = st.text_area("Write your message below:", height=150)
     submitted = st.form_submit_button("Save Message 💾", help="Save today's message")
     
@@ -88,7 +100,7 @@ st.markdown('<div class="message-box">', unsafe_allow_html=True)
 st.write(f"✨ **{today}** ✨")
 if today_messages:
     for msg in today_messages:
-        st.write(f" From {msg['author']}: 💖{msg['message']} 💖")
+        st.write(f"💖 From {msg['author']}: {msg['message']} 💖")
 else:
     st.write("No messages for today yet. 💌")
 st.markdown('</div>', unsafe_allow_html=True)
@@ -98,6 +110,6 @@ if messages:
     st.markdown("<h2 style='text-align: center;'>Past Messages</h2>", unsafe_allow_html=True)
     for msg in sorted(messages, key=lambda x: x["date"], reverse=True):
         st.markdown('<div class="message-box">', unsafe_allow_html=True)
-        st.write(f"✨**{msg['date']}**✨")
-        st.write(f"💌 From {msg['author']}: {msg['message']}💖")
+        st.write(f"**{msg['date']}**")
+        st.write(f"💌 From {msg['author']}: {msg['message']}")
         st.markdown('</div>', unsafe_allow_html=True)
