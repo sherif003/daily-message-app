@@ -25,31 +25,39 @@ if os.path.exists(MESSAGES_FILE):
 else:
     messages = []
 
-# Valentine's Day CSS for a cute, mobile-friendly layout with animations
+# Valentine's Day CSS for a cute, interactive, and mobile-friendly layout
 st.markdown(
     """
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
     body {
-        font-family: Arial, sans-serif;
-        background-color: #FFE6E6;
+        font-family: 'Indie Flower', cursive;
+        background: linear-gradient(45deg, #FF9AA2, #FFB7B2, #FFDAC1, #E2F0CB);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+    }
+    @keyframes gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
     .title {
-        font-family: "Comic Sans MS", cursive, sans-serif;
+        font-family: 'Indie Flower', cursive;
         color: #FF1493;
         text-align: center;
-        font-size: 2.5rem;
+        font-size: 3rem;
         margin-bottom: 1rem;
     }
     .subtitle {
-        font-family: "Comic Sans MS", cursive, sans-serif;
+        font-family: 'Indie Flower', cursive;
         color: #FF69B4;
         text-align: center;
-        font-size: 1.5rem;
+        font-size: 2rem;
         margin-top: -10px;
     }
     .message-box {
-        font-family: "Arial", sans-serif;
-        background-color: #FFF0F5;
+        font-family: 'Indie Flower', cursive;
+        background-color: rgba(255, 255, 255, 0.8);
         color: #FF1493;
         padding: 15px;
         border-radius: 15px;
@@ -57,12 +65,14 @@ st.markdown(
         margin: 10px auto;
         max-width: 90%;
         text-align: center;
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
     .save-button {
         background-color: #FF69B4 !important;
         color: white !important;
-        border-radius: 5px !important;
+        border-radius: 15px !important;
+        font-family: 'Indie Flower', cursive;
+        font-size: 1.2rem;
     }
     .heart {
         position: absolute;
@@ -96,12 +106,45 @@ st.markdown(
             transform: translateY(-20px) rotate(-45deg);
         }
     }
+    .sparkle {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        background-color: gold;
+        border-radius: 50%;
+        animation: sparkle 1s infinite ease-in-out;
+    }
+    @keyframes sparkle {
+        0%, 100% { opacity: 0; }
+        50% { opacity: 1; }
+    }
+    .balloon {
+        position: absolute;
+        width: 50px;
+        height: 70px;
+        background-color: #FF69B4;
+        border-radius: 50%;
+        animation: floatBalloon 10s infinite ease-in-out;
+    }
+    .balloon:before {
+        content: '';
+        position: absolute;
+        width: 10px;
+        height: 20px;
+        background-color: #FF69B4;
+        bottom: -20px;
+        left: 20px;
+    }
+    @keyframes floatBalloon {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-# Add floating hearts animation
+# Add floating hearts, sparkles, and balloons
 st.markdown(
     """
     <div>
@@ -113,6 +156,11 @@ st.markdown(
         <div class="heart" style="top: 60%; left: 30%;"></div>
         <div class="heart" style="top: 70%; left: 90%;"></div>
         <div class="heart" style="top: 80%; left: 40%;"></div>
+        <div class="sparkle" style="top: 15%; left: 25%;"></div>
+        <div class="sparkle" style="top: 35%; left: 75%;"></div>
+        <div class="sparkle" style="top: 55%; left: 45%;"></div>
+        <div class="balloon" style="top: 5%; left: 15%;"></div>
+        <div class="balloon" style="top: 25%; left: 85%;"></div>
     </div>
     """,
     unsafe_allow_html=True,
@@ -121,6 +169,17 @@ st.markdown(
 # Display the app title
 st.markdown('<h1 class="title">💌 Message of the Day 💌</h1>', unsafe_allow_html=True)
 st.markdown('<h2 class="subtitle">for Ayoy</h2>', unsafe_allow_html=True)
+
+# Interactive buttons for virtual kisses and hugs
+col1, col2 = st.columns(2)
+with col1:
+    if st.button("💋 Send a Kiss"):
+        st.balloons()
+        st.write("💖 Mwah! A virtual kiss has been sent to Ayoy! 💖")
+with col2:
+    if st.button("🤗 Send a Hug"):
+        st.snow()
+        st.write("💖 A warm virtual hug has been sent to Ayoy! 💖")
 
 # Form for writing a new message
 with st.form("message_form"):
