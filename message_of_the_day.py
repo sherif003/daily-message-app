@@ -16,7 +16,7 @@ MESSAGES_FILE = "messages.json"
 # Load existing messages or initialize as an empty list
 if os.path.exists(MESSAGES_FILE):
     try:
-        with open(MESSAGES_FILE, "r") as file:
+        with open(MESSAGES_FILE, "r", encoding="utf-8") as file:
             messages = json.load(file)
         if not isinstance(messages, list):
             messages = []  # Reset to empty list if the file contents are not a list
@@ -68,22 +68,14 @@ st.markdown(
         color: white !important;
         border-radius: 5px !important;
     }
-    .heart {
-        position: fixed;
-        top: 100%;
-        left: 50%;
-        font-size: 24px;
-        color: #FF4081;
-        animation: floating-hearts 5s linear infinite;
-    }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
 # Display the app title
-st.markdown('<h1 class="title">❤️ Valentine's Message ❤️</h1>', unsafe_allow_html=True)
-st.markdown('<h2 class="subtitle">For My Love 💕</h2>', unsafe_allow_html=True)
+st.markdown('<h1 class="title">&#10084;&#65039; Valentine\'s Message &#10084;&#65039;</h1>', unsafe_allow_html=True)
+st.markdown('<h2 class="subtitle">For My Love &#128149;</h2>', unsafe_allow_html=True)
 
 # Form for writing a new message
 with st.form("message_form"):
@@ -97,8 +89,8 @@ with st.form("message_form"):
             messages.append({"date": today, "author": author.strip(), "message": new_message.strip()})
             
             # Save to file
-            with open(MESSAGES_FILE, "w") as file:
-                json.dump(messages, file)
+            with open(MESSAGES_FILE, "w", encoding="utf-8") as file:
+                json.dump(messages, file, ensure_ascii=False, indent=4)
             
             st.success(f"Message from {author.strip()} has been saved successfully! 💕")
         else:
