@@ -5,8 +5,8 @@ import os
 
 # Set page configuration for mobile compatibility
 st.set_page_config(
-    page_title="Message of the Day", 
-    page_icon="💌", 
+    page_title="Valentine's Message", 
+    page_icon="❤️", 
     layout="centered"
 )
 
@@ -25,59 +25,83 @@ if os.path.exists(MESSAGES_FILE):
 else:
     messages = []
 
-# CSS for a cute, mobile-friendly layout
+# Valentine's Day Theme and Animation
 st.markdown(
     """
     <style>
+    @keyframes floating-hearts {
+        0% { transform: translateY(0) scale(1); opacity: 1; }
+        100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+    }
     body {
         font-family: Arial, sans-serif;
-        background-color: #FFF0F5;
+        background-color: #FFEEF0;
     }
     .title {
-        font-family: "Comic Sans MS", cursive, sans-serif;
-        color: #FF69B4;
+        font-family: "Dancing Script", cursive;
+        color: #E91E63;
         text-align: center;
-        font-size: 2.5rem;
+        font-size: 3rem;
         margin-bottom: 1rem;
     }
     .subtitle {
-        font-family: "Comic Sans MS", cursive, sans-serif;
-        color: #FF1493;
+        font-family: "Dancing Script", cursive;
+        color: #D81B60;
         text-align: center;
-        font-size: 1.5rem;
+        font-size: 2rem;
         margin-top: -10px;
     }
     .message-box {
         font-family: "Arial", sans-serif;
-        background-color: #FFF5FA;
-        color: #FF1493;
-        padding: 15px;
+        background-color: #FFEBEE;
+        color: #C2185B;
+        padding: 20px;
         border-radius: 15px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        margin: 10px auto;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        margin: 15px auto;
         max-width: 90%;
         text-align: center;
-        font-size: 1rem;
+        font-size: 1.2rem;
     }
     .save-button {
-        background-color: #FF69B4 !important;
+        background-color: #E91E63 !important;
         color: white !important;
         border-radius: 5px !important;
     }
+    .heart {
+        position: fixed;
+        top: 100%;
+        left: 50%;
+        font-size: 24px;
+        color: #FF4081;
+        animation: floating-hearts 5s linear infinite;
+    }
     </style>
+    <script>
+    function createHeart() {
+        let heart = document.createElement("div");
+        heart.className = "heart";
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+    }
+    setInterval(createHeart, 700);
+    </script>
     """,
     unsafe_allow_html=True,
 )
 
 # Display the app title
-st.markdown('<h1 class="title">💌 Message of the Day 💌</h1>', unsafe_allow_html=True)
-st.markdown('<h2 class="subtitle">for Ayoy 💖</h2>', unsafe_allow_html=True)
+st.markdown('<h1 class="title">❤️ Valentine's Message ❤️</h1>', unsafe_allow_html=True)
+st.markdown('<h2 class="subtitle">For My Love 💕</h2>', unsafe_allow_html=True)
 
 # Form for writing a new message
 with st.form("message_form"):
-    author = st.text_input("Your name (Sherif or Aya):", "")
-    new_message = st.text_area("Write your message below:", height=150)
-    submitted = st.form_submit_button("Save Message 💾", help="Save today's message")
+    author = st.text_input("Your name (e.g., You or Her):", "")
+    new_message = st.text_area("Write your love message below:", height=150)
+    submitted = st.form_submit_button("Save Message 💌", help="Save your sweet message")
     
     if submitted:
         today = date.today().strftime("%Y-%m-%d")
@@ -88,9 +112,9 @@ with st.form("message_form"):
             with open(MESSAGES_FILE, "w") as file:
                 json.dump(messages, file)
             
-            st.success(f"Message from {author.strip()} has been saved successfully!")
+            st.success(f"Message from {author.strip()} has been saved successfully! 💕")
         else:
-            st.error("Please fill in both the name and the message.")
+            st.error("Please fill in both the name and the message. 💖")
 
 # Show today's message
 today = date.today().strftime("%Y-%m-%d")
@@ -100,16 +124,16 @@ st.markdown('<div class="message-box">', unsafe_allow_html=True)
 st.write(f"✨ **{today}** ✨")
 if today_messages:
     for msg in today_messages:
-        st.write(f"💖 From {msg['author']}: {msg['message']} ")
+        st.write(f"💖 From {msg['author']}: {msg['message']} 💖")
 else:
     st.write("No messages for today yet. 💌")
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Show all past messages
 if messages:
-    st.markdown("<h2 style='text-align: center;'>Past Messages</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center;'>Past Love Notes 💝</h2>", unsafe_allow_html=True)
     for msg in sorted(messages, key=lambda x: x["date"], reverse=True):
         st.markdown('<div class="message-box">', unsafe_allow_html=True)
-        st.write(f"✨ **{msg['date']}** ✨")
+        st.write(f"**{msg['date']}**")
         st.write(f"💌 From {msg['author']}: {msg['message']}")
         st.markdown('</div>', unsafe_allow_html=True)
