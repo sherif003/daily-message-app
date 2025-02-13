@@ -8,7 +8,7 @@ st.set_page_config(page_title="My Love for You", page_icon="❤️", layout="cen
 love_message = "You are my heart, my soul, my everything! ❤️💖 Forever and always, you are my greatest treasure! Happy valantine's day ya Ayoy 💝"
 
 # Header
-st.markdown("<h1 style='text-align: center; color: #ff4d94;'>Happy Valentine's Day! ❤️</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: #ff4d94;'>لَا الأَيَّامُ مَعَكَ كَمَا كَانَتْ قَبْلَكِ، وَلَا الدُّنْيَا مَعَكَ مِنَ الجَمَالِ تُوصَفُ ❤️</h1>", unsafe_allow_html=True)
 
 # Display a single big message in white color
 st.markdown(f"<h2 style='text-align: center; color: #ff3385; background-color: #000000; padding: 15px; border-radius: 10px;'>{love_message}</h2>", unsafe_allow_html=True)
