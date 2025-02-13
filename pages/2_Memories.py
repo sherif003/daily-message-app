@@ -32,7 +32,7 @@ if media_files:
     for file in sorted(media_files):
         file_path = os.path.join(memories_dir, file)
         if file.lower().endswith(("jpg", "png", "jpeg")):
-            st.image(file_path, caption="A beautiful memory ❤️", use_column_width=True)
+            st.image(file_path, caption="A beautiful memory ❤️", use_container_width=True)
         elif file.lower().endswith("mp4"):
             st.video(file_path)
 else:
