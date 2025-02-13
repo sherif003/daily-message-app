@@ -11,7 +11,7 @@ love_message = "You are my heart, my soul, my everything! ❤️💖 Forever and
 st.markdown("<h1 style='text-align: center; color: #ff4d94;'>Happy Valentine's Day! ❤️</h1>", unsafe_allow_html=True)
 
 # Display a single big message in white color
-st.markdown(f"<h2 style='text-align: center; color: #ff3385; background-color: white; padding: 15px; border-radius: 10px;'>{love_message}</h2>", unsafe_allow_html=True)
+st.markdown(f"<h2 style='text-align: center; color: #ff3385; background-color: #000000; padding: 15px; border-radius: 10px;'>{love_message}</h2>", unsafe_allow_html=True)
 
 # Countdown to next Valentine's Day
 next_valentine = datetime(datetime.now().year + 1, 2, 14)
