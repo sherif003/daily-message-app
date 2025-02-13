@@ -5,7 +5,7 @@ from datetime import datetime
 st.set_page_config(page_title="My Love for You", page_icon="❤️", layout="centered")
 
 # Single Love Message
-love_message = "You are my heart, my soul, my everything! ❤️💖 Forever and always, you are my greatest treasure!"
+love_message = "You are my heart, my soul, my everything! ❤️💖 Forever and always, you are my greatest treasure! Happy valantine's day ya Ayoy 💝"
 
 # Header
 st.markdown("<h1 style='text-align: center; color: #ff4d94;'>Happy Valentine's Day! ❤️</h1>", unsafe_allow_html=True)
