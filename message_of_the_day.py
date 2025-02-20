@@ -9,30 +9,35 @@ st.set_page_config(page_title="Message of the Day", page_icon="💌", layout="ce
 st.markdown("<h1 style='text-align: center; color: #FF69B4;'>💌 Message of the Day 💌</h1>", unsafe_allow_html=True)
 st.markdown("<h2 style='text-align: center; color: #FF1493;'>for Ayoy</h2>", unsafe_allow_html=True)
 
-# Debugging: Check Google Sheets connection
-try:
-    secrets_dict = st.secrets["google_service_account"]
-    credentials = Credentials.from_service_account_info(
-        dict(secrets_dict), 
-        scopes=["https://www.googleapis.com/auth/spreadsheets"]
-    )
-    client = gspread.authorize(credentials)
-    SHEET_NAME = "Messages"  # Change if your sheet has a different name
-    sheet = client.open(SHEET_NAME).sheet1
+# Function to connect to Google Sheets
+@st.cache_resource
+def connect_to_sheets():
+    try:
+        secrets_dict = st.secrets["google_service_account"]
+        credentials = Credentials.from_service_account_info(
+            dict(secrets_dict), 
+            scopes=["https://www.googleapis.com/auth/spreadsheets"]
+        )
+        client = gspread.authorize(credentials)
+        SHEET_NAME = "Messages"  # Change if your sheet name is different
+        sheet = client.open(SHEET_NAME).sheet1
+        return sheet
+    except gspread.exceptions.APIError as e:
+        st.error(f"❌ Google Sheets API Error: {str(e)}")
+        st.stop()
+    except KeyError:
+        st.error("❌ Google Sheets API credentials are missing! Please add them to Streamlit Secrets.")
+        st.stop()
+    except Exception as e:
+        st.error(f"❌ General Error: {str(e)}")
+        st.stop()
 
-    st.success("✅ Google Sheets connection successful!")
-
-except gspread.exceptions.APIError as e:
-    st.error(f"❌ Google Sheets API Error: {str(e)}")
-    st.stop()
-except KeyError:
-    st.error("❌ Google Sheets API credentials are missing! Please add them to Streamlit Secrets.")
-    st.stop()
-except Exception as e:
-    st.error(f"❌ General Error: {str(e)}")
-    st.stop()
+# Connect to Google Sheets
+sheet = connect_to_sheets()
+st.success("✅ Google Sheets connection successful!")
 
 # Function to load messages
+@st.cache_data(ttl=300)  # Cache data for 5 minutes
 def load_messages():
     try:
         records = sheet.get_all_records()
@@ -47,6 +52,7 @@ def save_message(author, message):
         today = date.today().strftime("%Y-%m-%d")
         sheet.append_row([today, author, message])
         st.success(f"✅ Message from {author.strip()} has been saved successfully!")
+        st.rerun()  # Refresh to show new messages immediately
     except Exception as e:
         st.error(f"❌ Error saving message: {str(e)}")
 
@@ -72,7 +78,7 @@ today_messages = [msg for msg in messages if msg["Date"] == today]
 st.markdown("<h3 style='text-align: center;'>📅 Today's Messages</h3>", unsafe_allow_html=True)
 if today_messages:
     for msg in today_messages:
-        st.write(f"💖 From {msg['Author']}: {msg['Message']} 💖")
+        st.markdown(f"💖 **From {msg['Author']}**: {msg['Message']} 💖")
 else:
     st.write("No messages for today yet. 💌")
 
@@ -80,5 +86,4 @@ else:
 if messages:
     st.markdown("<h3 style='text-align: center;'>📜 Past Messages</h3>", unsafe_allow_html=True)
     for msg in sorted(messages, key=lambda x: x["Date"], reverse=True):
-        st.write(f"📅 **{msg['Date']}** - 💌 From {msg['Author']}: {msg['Message']}")
-
+        st.markdown(f"📅 **{msg['Date']}** - 💌 **From {msg['Author']}**: {msg['Message']}")
