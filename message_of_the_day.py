@@ -62,19 +62,16 @@ if today_messages:
 else:
     st.write("No messages for today yet. 💌")
 
-# Show all messages in a table
+# Show past messages (same format as before)
 if messages:
-    st.markdown("<h3 style='text-align: center;'>📜 All Messages</h3>", unsafe_allow_html=True)
-    
-    # Convert messages to a DataFrame
-    messages_df = pd.DataFrame(messages, columns=["Date", "Author", "Message"])
-    
-    # Display messages in a table
-    st.dataframe(messages_df)
+    st.markdown("<h3 style='text-align: center;'>📜 Past Messages</h3>", unsafe_allow_html=True)
+    for msg in sorted(messages, key=lambda x: x[0], reverse=True):
+        st.write(f"📅 **{msg[0]}** - 💌 From {msg[1]}: {msg[2]}")
 
-    # Export messages to CSV
-    csv = messages_df.to_csv(index=False).encode("utf-8")
-    st.download_button("📥 Download Messages as CSV", csv, "messages.csv", "text/csv")
+# Export messages as CSV
+messages_df = pd.DataFrame(messages, columns=["Date", "Author", "Message"])
+csv = messages_df.to_csv(index=False).encode("utf-8")
+st.download_button("📥 Download Messages as CSV", csv, "messages.csv", "text/csv")
 
 # Close the database connection
 conn.close()
